@@ -15,11 +15,11 @@ TagManager:
   - 
   - GroundChecker
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
+  - EnemyHurtBox
+  - AttackLayer
+  - EnemyAttack
+  - PlayerHurtBox
+  - Player
   - 
   - 
   - 
