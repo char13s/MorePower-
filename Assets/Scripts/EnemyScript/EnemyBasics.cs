@@ -21,11 +21,13 @@ public class EnemyBasics : MonoBehaviour {
     [SerializeField] private Tiers tier;
     [SerializeField] private float speed;
     [SerializeField] private float attackPower;
+    [SerializeField] private float defense;
     #endregion
 
     #region Events
     public static event UnityAction<int> sendOrbs;
     #endregion
+    
     private PlayerInputs player;
 
     public float Health { get => health; set { health = Mathf.Clamp(value, 0, 9999);HealthCheck(); } }
@@ -34,6 +36,7 @@ public class EnemyBasics : MonoBehaviour {
     public bool Hit { get => hit; set => hit = value; }
     public float AttackDelay { get => attackDelay; set => attackDelay = Mathf.Clamp(value,0,999); }
     public float AttackPower { get => attackPower; set => attackPower = value; }
+    public float Defense { get => defense; set => defense = value; }
 
     private float Distance() => Vector2.Distance(transform.position, player.transform.position);
     // Start is called before the first frame update
@@ -42,18 +45,18 @@ public class EnemyBasics : MonoBehaviour {
     }
     void Start() {
         player = PlayerInputs.GetPlayer();
-        slowUpdate = StartCoroutine(SlowUpdate());
+        //slowUpdate = StartCoroutine(SlowUpdate());
     }
 
     // Update is called once per frame
     void Update() {
-        if (Distance() > 0.25f) {
+        if (Distance() > 5f&&!hit) {
             Follow();
         }
     }
     private void FakeUpdate() {
         
-        if (Distance() < 0.45f) {
+        if (Distance() < 0.45f&&!hit) {
             AttackState();
         }
     }
@@ -70,7 +73,7 @@ public class EnemyBasics : MonoBehaviour {
     }
     #region Helper Methods
     private void HealthCheck() {
-        if (health == 0) {
+        if (health == 0&&!dead) {
             Dead = true;
         }
     }
@@ -96,6 +99,9 @@ public class EnemyBasics : MonoBehaviour {
                 }
                 break;
         }
+    }
+    private void OnHit() {
+        AttackDelay = 5;
     }
     #endregion
     #region coroutines
